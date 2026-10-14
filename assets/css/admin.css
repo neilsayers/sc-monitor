@@ -1,0 +1,103 @@
+/* SC Monitor dashboard widget. Plain on purpose — it should look like WordPress. */
+
+.scmonitor__status {
+    margin-top: 0;
+    color: #50575e;
+}
+
+.scmonitor__clear {
+    padding: 10px 12px;
+    background: #edfaef;
+    border-left: 4px solid #00a32a;
+}
+
+.scmonitor__list {
+    margin: 0 0 12px;
+    padding: 0;
+    list-style: none;
+}
+
+.scmonitor__issue {
+    margin: 0 0 10px;
+    padding: 8px 12px;
+    background: #f6f7f7;
+    border-left: 4px solid #c3c4c7;
+}
+
+.scmonitor__issue--fatal { border-left-color: #d63638; }
+.scmonitor__issue--warning { border-left-color: #dba617; }
+
+.scmonitor__head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 4px;
+}
+
+.scmonitor__badge {
+    padding: 1px 7px;
+    border-radius: 3px;
+    background: #646970;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.scmonitor__badge--fatal { background: #d63638; }
+.scmonitor__badge--warning { background: #996800; }
+
+.scmonitor__flag {
+    padding: 1px 7px;
+    border-radius: 3px;
+    background: #2271b1;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.scmonitor__count {
+    margin-left: auto;
+    font-weight: 600;
+}
+
+.scmonitor__message {
+    margin: 0 0 4px;
+    word-break: break-word;
+}
+
+.scmonitor__where,
+.scmonitor__meta {
+    margin: 0 0 4px;
+    color: #50575e;
+    font-size: 12px;
+}
+
+.scmonitor__where code {
+    word-break: break-all;
+}
+
+.scmonitor__detail summary {
+    cursor: pointer;
+    color: #2271b1;
+    font-size: 12px;
+}
+
+.scmonitor__detail pre {
+    max-height: 180px;
+    margin: 6px 0 0;
+    padding: 8px;
+    overflow: auto;
+    background: #fff;
+    font-size: 11px;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+.scmonitor__actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 0;
+}

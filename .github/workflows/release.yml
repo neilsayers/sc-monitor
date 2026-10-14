@@ -1,0 +1,67 @@
+# Publishes a GitHub Release whenever the plugin header's Version changes.
+#
+# To release: bump "Version:" in sc-monitor.php, commit, push to main.
+# That's all. This workflow tags vX.Y.Z, builds sc-monitor.zip and
+# attaches it to the release. A push that leaves the version alone
+# does nothing.
+#
+# The zip has a single top-level "sc-monitor" folder, so WordPress installs
+# it under the right directory (GitHub's own source archives are named
+# "owner-repo-<hash>" and would not), and its readme's "Stable tag" is
+# set from the header, so the two can never disagree in what ships.
+# screencandy.co.uk reads the latest release's version and this zip's
+# URL to build the download button on its plugins page.
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+env:
+  SLUG: sc-monitor
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Is this version already released?
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version=$(grep -m1 -E '^[[:space:]*]*Version:' "$SLUG.php" | sed -E 's/.*Version:[[:space:]]*//' | tr -d '[:space:]')
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          if gh release view "v$version" >/dev/null 2>&1; then
+            echo "v$version already released; nothing to do."
+            echo "new=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "new=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build zip
+        if: steps.check.outputs.new == 'true'
+        run: |
+          mkdir "build-$SLUG"
+          rsync -a ./ "build-$SLUG/$SLUG/" \
+            --exclude='/.git' --exclude='/.github' --exclude='/.gitignore' \
+            --exclude='.DS_Store' --exclude='/node_modules' --exclude='/tests' \
+            --exclude='/CLAUDE.md' --exclude='/phpunit*.xml*' \
+            --exclude='/composer.json' --exclude='/composer.lock' \
+            --exclude="/build-$SLUG"
+          if [ -f "build-$SLUG/$SLUG/readme.txt" ]; then
+            sed -i -E "s/^Stable tag:.*/Stable tag: ${{ steps.check.outputs.version }}/" "build-$SLUG/$SLUG/readme.txt"
+          fi
+          (cd "build-$SLUG" && zip -rq "../$SLUG.zip" "$SLUG")
+
+      - name: Publish release
+        if: steps.check.outputs.new == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "v${{ steps.check.outputs.version }}" "$SLUG.zip" \
+            --target "$GITHUB_SHA" --title "v${{ steps.check.outputs.version }}" --generate-notes
