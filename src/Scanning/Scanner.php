@@ -132,8 +132,13 @@ final class Scanner
         $min = (int) $this->settings->get('min_severity', LogParser::WARNING);
         $ignore = $this->settings->ignorePatterns();
 
-        return \array_values(\array_filter($entries, static function (array $entry) use ($min, $ignore): bool {
-            if ($entry['severity'] < $min) {
+        // Older than the retention window: the store would prune it
+        // straight away, so don't count it as kept in the first place.
+        // (A first scan of a long-lived log meets plenty of these.)
+        $cutoff = \time() - \max(1, (int) $this->settings->get('retention_days', 30)) * DAY_IN_SECONDS;
+
+        return \array_values(\array_filter($entries, static function (array $entry) use ($min, $ignore, $cutoff): bool {
+            if ($entry['severity'] < $min || ($entry['time'] > 0 && $entry['time'] < $cutoff)) {
                 return false;
             }
 
