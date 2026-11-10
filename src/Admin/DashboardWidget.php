@@ -77,7 +77,7 @@ final class DashboardWidget implements Hookable
                 <?php if ($lastScan === 0) : ?>
                     Not scanned yet — the first scan runs within the hour, or scan now.
                 <?php elseif (empty($state['log_found'])) : ?>
-                    <strong>No PHP error log found.</strong> Set its location under Settings → SC Monitor, or turn on <code>WP_DEBUG_LOG</code>.
+                    <strong>No PHP error log found.</strong> Set its location on the SC Monitor page in the menu, or turn on <code>WP_DEBUG_LOG</code>.
                 <?php else : ?>
                     Last scan <?php echo \esc_html(\human_time_diff($lastScan)); ?> ago ·
                     <code><?php echo \esc_html(\basename((string) ($state['path'] ?? ''))); ?></code>
@@ -103,7 +103,7 @@ final class DashboardWidget implements Hookable
                 <?php if ($issues !== []) : ?>
                     <a class="button" href="<?php echo \esc_url($this->actionUrl(self::ACTION_DISMISS_ALL)); ?>">Dismiss all</a>
                 <?php endif; ?>
-                <a href="<?php echo \esc_url(\admin_url('options-general.php?page=scmonitor-settings')); ?>">Settings</a>
+                <a href="<?php echo \esc_url(\admin_url('admin.php?page=scmonitor-settings')); ?>">Settings</a>
             </p>
         </div>
         <?php

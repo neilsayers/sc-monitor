@@ -4,7 +4,7 @@ Tags: monitoring, error log, php errors, dashboard
 Requires at least: 6.6
 Tested up to: 6.9
 Requires PHP: 8.1
-Stable tag: 0.1.0
+Stable tag: 0.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -26,13 +26,16 @@ that says "x900, first seen 9 days ago, last seen 2 hours ago" — not nine hund
 * **WP-CLI**: `wp sc-monitor scan` and `wp sc-monitor issues` show the same data over SSH.
 * **Scheduling**: hourly via WP-Cron by default (no setup; runs when the site is visited). For exact timing run
   `wp sc-monitor scan` from a real cron job and untick "Scan hourly using WP-Cron" — step-by-step instructions, with the
-  site's own path filled in, are on Settings → SC Monitor.
+  site's own path filled in, are on the SC Monitor page in the admin menu.
 
 The log is found automatically (the `error_log` PHP setting, `php_errorlog` in the WordPress root, then
-`wp-content/debug.log`); Settings → SC Monitor can override it. Add or reorder candidates with the
+`wp-content/debug.log`); the SC Monitor page can override it. Add or reorder candidates with the
 `scmonitor_log_paths` filter.
 
 == Changelog ==
+
+= 0.2.0 =
+* The settings page is now its own top-level SC Monitor menu item (with a Settings submenu), like the other SC plugins, instead of living under Settings.
 
 = 0.1.0 =
 * First release: hourly incremental scan of the PHP error log, de-duplicated into a dashboard widget.

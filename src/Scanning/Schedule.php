@@ -9,7 +9,7 @@ use SCMonitor\Settings\Settings;
  * The hourly WP-Cron event that runs a scan.
  *
  * Skipped when "Use WP-Cron" is off (a real server cron job runs
- * `wp sc-monitor scan` instead — see Settings → SC Monitor).
+ * `wp sc-monitor scan` instead — see the SC Monitor page in the admin menu).
  *
  * Scheduled again on `init` if it's missing, not only on activation:
  * a plugin copied onto a server (rsync, FTP) and activated from the

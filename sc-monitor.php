@@ -4,7 +4,7 @@
  * Plugin Name:       SC Monitor
  * Plugin URI:        https://screencandy.co.uk
  * Description:       Watches the site's PHP error log and puts each distinct problem — once, with a count — in a dashboard widget. Small on purpose: no external service, no emails, no tracking.
- * Version:           0.1.0
+ * Version:           0.2.0
  * Requires at least: 6.6
  * Requires PHP:      8.1
  * Author:            Neil Sayers
@@ -20,7 +20,7 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
-define('SCMONITOR_VERSION', '0.1.0');
+define('SCMONITOR_VERSION', '0.2.0');
 define('SCMONITOR_FILE', __FILE__);
 define('SCMONITOR_PATH', \plugin_dir_path(__FILE__));
 define('SCMONITOR_URL', \plugin_dir_url(__FILE__));

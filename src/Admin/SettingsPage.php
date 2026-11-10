@@ -8,7 +8,7 @@ use SCMonitor\Settings\Settings;
 use SCMonitor\Support\LogLocator;
 
 /**
- * Settings → SC Monitor. A handful of fields over the one
+ * The SC Monitor menu page (top level, like the other SC plugins). A handful of fields over the one
  * scmonitor_settings option row; the monitor works with none of them
  * touched.
  */
@@ -29,7 +29,25 @@ final class SettingsPage implements Hookable
 
     public function registerMenu(): void
     {
-        \add_options_page('SC Monitor', 'SC Monitor', 'manage_options', self::PAGE_SLUG, [$this, 'renderPage']);
+        \add_menu_page(
+            'SC Monitor',
+            'SC Monitor',
+            'manage_options',
+            self::PAGE_SLUG,
+            [$this, 'renderPage'],
+            'dashicons-warning',
+            94
+        );
+
+        // The first submenu item repeats the page, so the menu reads "SC Monitor → Settings".
+        \add_submenu_page(
+            self::PAGE_SLUG,
+            'SC Monitor',
+            'Settings',
+            'manage_options',
+            self::PAGE_SLUG,
+            [$this, 'renderPage']
+        );
     }
 
     public function handleSave(): void
@@ -54,7 +72,7 @@ final class SettingsPage implements Hookable
         \add_settings_error('scmonitor_settings', 'settings-updated', 'Settings saved.', 'success');
         \set_transient('settings_errors', \get_settings_errors(), 30);
 
-        \wp_safe_redirect(\admin_url('options-general.php?page='.self::PAGE_SLUG.'&settings-updated=true'));
+        \wp_safe_redirect(\admin_url('admin.php?page='.self::PAGE_SLUG.'&settings-updated=true'));
         exit;
     }
 
